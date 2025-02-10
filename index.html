@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Love Proposal</title>
+    <style>
+        /* Global Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            height: 100vh;
+            width: 100%;
+            background: linear-gradient(135deg, #f1c6e8, #ff8db2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            overflow: hidden;
+            color: #333;
+            text-align: center;
+            position: relative;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            user-select: none;
+        }
+
+        h1, p {
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+            font-family: 'Dancing Script', cursive;
+        }
+
+        /* Main page container with white background and box shadow */
+        #mainPage {
+            text-align: center;
+            padding: 40px;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.9); /* white background */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* shadow */
+            width: 90%;
+            max-width: 600px;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        /* Container styles for other pages without the white background and shadow */
+        .container {
+            text-align: center;
+            padding: 40px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 600px;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+            background: none; /* no background */
+            box-shadow: none; /* no shadow */
+        }
+
+        .title {
+            font-size: 4em;
+            color: #e91e63;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .intro {
+            font-size: 1.6em;
+            color: #4a4a4a;
+            margin-bottom: 30px;
+        }
+
+        .buttons {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        .btn {
+            background-color: #e91e63;
+            color: white;
+            font-size: 1.4em;
+            padding: 15px 30px;
+            border-radius: 30px;
+            text-decoration: none;
+            margin: 10px;
+            transition: all 0.4s ease-in-out;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn:hover {
+            background-color: #f44336;
+            transform: scale(1.1);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .love-page, .sorry-page {
+            display: none;
+        }
+
+        .love-page.show, .sorry-page.show {
+            display: block;
+        }
+
+        /* Broken Heart Animation */
+        .broken-heart {
+            font-size: 5em;
+            animation: shakeHeart 1s ease-in-out infinite;
+        }
+
+        @keyframes shakeHeart {
+            0% { transform: rotate(0); }
+            25% { transform: rotate(-10deg); }
+            50% { transform: rotate(10deg); }
+            75% { transform: rotate(-10deg); }
+            100% { transform: rotate(0); }
+        }
+
+        /* Subtle background effects */
+        .background-effects {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://cdn.pixabay.com/photo/2015/09/18/19/03/star-941579_960_720.jpg') no-repeat center center/cover;
+            opacity: 0.1;
+            z-index: -1;
+        }
+
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2.5em;
+            }
+            .intro {
+                font-size: 1.3em;
+            }
+            .btn {
+                font-size: 1.2em;
+                padding: 12px 25px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .title {
+                font-size: 2em;
+            }
+            .intro {
+                font-size: 1.1em;
+            }
+            .btn {
+                font-size: 1em;
+                padding: 10px 20px;
+            }
+        }
+
+        /* Small font for names */
+        .name-text {
+            font-size: 2.0em;
+            color: #e91e63;
+            font-weight: normal;
+            margin-top: 10px;
+            text-shadow: none;
+        }
+
+        /* Animated love emoji (shaking effect) */
+        .shaking-heart {
+            font-size: 6em;
+            animation: shakeHeartEmoji 1s ease-in-out infinite;
+        }
+
+        /* Shake animation for heart emoji */
+        @keyframes shakeHeartEmoji {
+            0% {
+                transform: translateX(0);
+            }
+            25% {
+                transform: translateX(-10px);
+            }
+            50% {
+                transform: translateX(10px);
+            }
+            75% {
+                transform: translateX(-10px);
+            }
+            100% {
+                transform: translateX(0);
+            }
+        }
+
+        /* Floating Hearts (Main Page) */
+        .floating-hearts-main {
+            position: absolute;
+            font-size: 2em;
+            animation: floatHeartsMain 5s ease-in-out infinite;
+        }
+
+        @keyframes floatHeartsMain {
+            0% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-30px);
+            }
+            100% {
+                transform: translateY(0);
+            }
+        }
+
+        /* Floating Hearts (Inside Love Page) */
+        .inside-love-box {
+            font-size: 2em;
+            color: red;
+            position: absolute;
+            animation: floatHeartsInside 6s ease-in-out infinite;
+        }
+
+        @keyframes floatHeartsInside {
+            0% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-25px);
+            }
+            100% {
+                transform: translateY(0);
+            }
+        }
+
+        /* Adjust positions of hearts inside love page */
+        .inside-love-box-1 {
+            top: 15%;
+            left: 10%;
+        }
+
+        .inside-love-box-2 {
+            top: 30%;
+            left: 25%;
+        }
+
+        .inside-love-box-3 {
+            top: 50%;
+            left: 40%;
+        }
+
+        .inside-love-box-4 {
+            top: 70%;
+            left: 60%;
+        }
+
+        .inside-love-box-5 {
+            top: 80%;
+            left: 80%;
+        }
+        
+    </style>
+</head>
+<body onload="fadeInContent()">
+
+    <!-- Floating Hearts on Main Page -->
+    <div id="floatingHeartMain" class="floating-hearts-main" style="top: 8%; left: 5%;">❤️</div>
+    <div id="floatingHeartMain" class="floating-hearts-main" style="top: 20%; left: 10%;">❤️</div>
+    <div id="floatingHeartMain" class="floating-hearts-main" style="top: 30%; left: 20%;">❤️</div>
+    <div id="floatingHeartMain" class="floating-hearts-main" style="top: 50%; left: 10%;">❤️</div>
+    <div id="floatingHeartMain" class="floating-hearts-main" style="top: 40%; left: 15%;">❤️</div>
+    <div id="floatingHeartMain" class="floating-hearts-main" style="top: 60%; left: 20%;">❤️</div>
+    <div id="floatingHeartMain" class="floating-hearts-main" style="top: 88%; left: 42%;">❤️</div>
+    
+    <div id="floatingHeartMain" class="floating-hearts-main" style="top: 8%; right: 5%;">❤️</div>
+    <div id="floatingHeartMain" class="floating-hearts-main" style="top: 20%; right: 10%;">❤️</div>
+    <div id="floatingHeartMain" class="floating-hearts-main" style="top: 30%; right: 20%;">❤️</div>
+    <div id="floatingHeartMain" class="floating-hearts-main" style="top: 50%; right: 10%;">❤️</div>
+    <div id="floatingHeartMain" class="floating-hearts-main" style="top: 40%; right: 15%;">❤️</div>
+    <div id="floatingHeartMain" class="floating-hearts-main" style="top: 60%; right: 20%;">❤️</div>
+    <div id="floatingHeartMain" class="floating-hearts-main" style="top: 88%; right: 42%;">❤️</div>
+
+    <div class="background-effects"></div>
+
+    <!-- Main Page -->
+    <div id="mainPage" class="container">
+        <h1 class="title">I Love You</h1>
+        <p class="intro">Would you share your heart with me?</p>
+        <div class="buttons">
+            <button class="btn" onclick="showLovePage()">I love you too</button>
+            <button class="btn" onclick="showSorryPage()">I, hate you</button>
+        </div>
+    </div>
+
+    <!-- Love Page -->
+    <div id="lovePage" class="container love-page">
+        <h1 class="title">Together, Forever</h1>
+        <p class="heart-text">
+            True love is not just a feeling, it's an eternal promise. 💕 
+            <br> <!-- New line here -->
+            You & Me
+        </p>
+        <br>
+        <!-- Small font for the names -->
+        <p class="name-text">Mohanapriya 💕 Gokulakannan</p>
+
+        <!-- Floating Hearts Inside the Love Box -->
+        <div class="love-animation">
+            <span class="inside-love-box inside-love-box-1">💕</span>
+        </div>
+    </div>
+
+    <!-- Sorry Page -->
+    <div id="sorryPage" class="container sorry-page">
+        <h1 class="title">I'm Sorry...</h1>
+        <p class="sorry-text">Though we are apart, my heart always whispers your name.</p>
+        <span class="broken-heart">💔</span>
+    </div>
+
+    <script>
+        // Fade-in content when the page loads
+        function fadeInContent() {
+            document.body.style.opacity = "1";
+        }
+
+        // Functions to show/hide pages
+        function showLovePage() {
+            document.getElementById("mainPage").style.display = "none";
+            document.getElementById("lovePage").classList.add("show");
+            document.getElementById("sorryPage").classList.remove("show");
+
+            // Hide all floating hearts
+            const floatingHearts = document.querySelectorAll('.floating-hearts-main');
+            floatingHearts.forEach(function(heart) {
+                heart.style.display = 'none';
+            });
+        }
+
+        function showSorryPage() {
+            document.getElementById("mainPage").style.display = "none";
+            document.getElementById("sorryPage").classList.add("show");
+            document.getElementById("lovePage").classList.remove("show");
+
+            // Hide all floating hearts
+            const floatingHearts = document.querySelectorAll('.floating-hearts-main');
+            floatingHearts.forEach(function(heart) {
+                heart.style.display = 'none';
+            });
+        }
+    </script>
+
+</body>
+</html>
